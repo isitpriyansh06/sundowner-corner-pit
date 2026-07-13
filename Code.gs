@@ -1,6 +1,6 @@
 const CONFIG = {
-  SHEET_ID: "PASTE_GOOGLE_SHEET_ID_HERE",
-  SHEET_NAME: "Guests"
+  SHEET_ID: "1eJDCdnUTy7I927OeKVZjuK0qDT_Y2pZbazDFo2ULpCU",
+  SHEET_NAME: "18th July Sundowner RSVP"
 };
 
 function doGet() {
