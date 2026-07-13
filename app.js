@@ -23,7 +23,7 @@
   const eventDetails = Object.freeze({
     title: "Fir Se — 18 July, 5:30 PM",
     start: "20260718T173000",
-    end: "20260718T203000",
+    end: "20260718T193000",
     timezone: "Asia/Kolkata",
     location: eventAddress,
     description: "Fir Se sundowner at Corner Pit. Starts at 5:30 PM."
