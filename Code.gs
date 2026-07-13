@@ -17,21 +17,32 @@ function doPost(e) {
 
   const name = String(params.name || "").replace(/\s+/g, " ").trim();
   const plusOnes = Number(params.plusOnes);
+  const plusOneName = String(params.plusOneName || "").replace(/\s+/g, " ").trim();
 
-  if (!name || name.length > 80 || !Number.isInteger(plusOnes) || plusOnes < 0 || plusOnes > 2) {
+  if (!name || name.length > 80 || !Number.isInteger(plusOnes) || plusOnes < 0 || plusOnes > 1 || plusOneName.length > 80 || (plusOnes === 1 && !plusOneName)) {
     return json_({ ok: false, error: "Invalid RSVP" });
   }
 
   const spreadsheet = SpreadsheetApp.openById(CONFIG.SHEET_ID);
   const sheet = spreadsheet.getSheetByName(CONFIG.SHEET_NAME) || spreadsheet.insertSheet(CONFIG.SHEET_NAME);
 
+  setUpSheet_(sheet);
+
+  sheet.appendRow([new Date(), name, plusOnes, plusOnes === 1 ? plusOneName : "", 1 + plusOnes]);
+  return json_({ ok: true });
+}
+
+function setUpSheet_(sheet) {
   if (sheet.getLastRow() === 0) {
-    sheet.appendRow(["Timestamp", "Name", "Plus Ones", "Total Guests"]);
+    sheet.appendRow(["Timestamp", "Name", "Plus Ones", "Plus-one Name", "Total Guests"]);
     sheet.setFrozenRows(1);
+    return;
   }
 
-  sheet.appendRow([new Date(), name, plusOnes, 1 + plusOnes]);
-  return json_({ ok: true });
+  if (sheet.getRange(1, 4).getValue() === "Total Guests") {
+    sheet.insertColumnBefore(4);
+    sheet.getRange(1, 4).setValue("Plus-one Name");
+  }
 }
 
 function json_(value) {

@@ -4,5 +4,5 @@ window.RAVES_CONFIG = Object.freeze({
   // Private address revealed after RSVP.
   MAP_LINK: "https://maps.app.goo.gl/vJD5KaQXEj1DkYjy5",
   EVENT_ADDRESS: "Eden Au Lac Apartment, 25/34, Binnamangala, Hoysala Nagar, Indiranagar, Bengaluru, Karnataka 560038",
-  MAX_PLUS_ONES: 2
+  MAX_PLUS_ONES: 1
 });

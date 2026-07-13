@@ -281,6 +281,16 @@ input[type="text"]:focus { border-bottom-color: var(--terracotta); }
   text-transform: none;
 }
 
+.field-note {
+  max-width: 520px;
+  margin: -7px 0 17px;
+  color: rgba(18, 21, 20, 0.67);
+  font-family: var(--serif);
+  font-size: 15px;
+  font-style: italic;
+  line-height: 1.35;
+}
+
 .choice-list {
   display: flex;
   flex-wrap: wrap;
@@ -326,6 +336,20 @@ input[type="text"]:focus { border-bottom-color: var(--terracotta); }
 .choice input:focus-visible + .choice-mark {
   outline: 3px solid var(--blue);
   outline-offset: 3px;
+}
+
+.plus-one-field {
+  margin-top: 25px;
+}
+
+.plus-one-field label {
+  display: block;
+  margin-bottom: 11px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.8px;
+  line-height: 1.35;
+  text-transform: uppercase;
 }
 
 .host-note {

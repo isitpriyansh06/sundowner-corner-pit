@@ -48,6 +48,7 @@
             <fieldset class="guest-count">
               <legend>Who are you bringing along?</legend>
               <p class="field-hint">One good plus-one is the sweet spot. It keeps the room feeling like us &mdash; and there&rsquo;s a good chance we&rsquo;ve already invited them ;)</p>
+              <p class="field-note">Thinking of bringing more than one? Send us a note first &mdash; we&rsquo;ll see what the sunset can hold.</p>
               <div class="choice-list">
                 <label class="choice">
                   <input type="radio" name="plusOnes" value="0" checked />
@@ -59,13 +60,14 @@
                   <span class="choice-mark" aria-hidden="true"></span>
                   <span>Me + 1</span>
                 </label>
-                <label class="choice">
-                  <input type="radio" name="plusOnes" value="2" />
-                  <span class="choice-mark" aria-hidden="true"></span>
-                  <span>Me + 2</span>
-                </label>
               </div>
             </fieldset>
+
+            <div id="plus-one-field" class="plus-one-field" hidden>
+              <label for="plus-one-name">Who&rsquo;s joining you?</label>
+              <input id="plus-one-name" name="plusOneName" type="text" autocomplete="name" maxlength="80" placeholder="Their name" />
+              <p class="field-error" id="plus-one-name-error" role="alert"></p>
+            </div>
 
             <aside class="host-note">
               <p>House note</p>

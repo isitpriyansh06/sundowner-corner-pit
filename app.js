@@ -3,6 +3,9 @@
   const form = document.querySelector("#rsvp-form");
   const nameInput = document.querySelector("#name");
   const nameError = document.querySelector("#name-error");
+  const plusOneField = document.querySelector("#plus-one-field");
+  const plusOneNameInput = document.querySelector("#plus-one-name");
+  const plusOneNameError = document.querySelector("#plus-one-name-error");
   const formStatus = document.querySelector("#form-status");
   const successView = document.querySelector("#success-view");
   const invitation = document.querySelector(".invitation");
@@ -144,13 +147,38 @@
     return true;
   }
 
+  function updatePlusOneField() {
+    const hasPlusOne = getPlusOnes() === 1;
+    plusOneField.hidden = !hasPlusOne;
+    plusOneNameInput.required = hasPlusOne;
+
+    if (!hasPlusOne) {
+      plusOneNameInput.value = "";
+      plusOneNameError.textContent = "";
+    }
+  }
+
+  function validatePlusOneName(plusOnes) {
+    if (plusOnes !== 1) return true;
+
+    const plusOneName = cleanName(plusOneNameInput.value);
+    plusOneNameInput.value = plusOneName;
+    if (!plusOneName) {
+      plusOneNameError.textContent = "Add their name so we can keep the right place ready.";
+      plusOneNameInput.focus();
+      return false;
+    }
+    plusOneNameError.textContent = "";
+    return true;
+  }
+
   function getPlusOnes() {
     const selected = form.querySelector("input[name=plusOnes]:checked");
     const value = Number(selected ? selected.value : 0);
     return Math.min(Math.max(value, 0), maxPlusOnes);
   }
 
-  async function saveRsvp(name, plusOnes) {
+  async function saveRsvp(name, plusOnes, plusOneName) {
     if (!endpoint) {
       // Keeps the local preview usable before the sheet endpoint is connected.
       await new Promise((resolve) => window.setTimeout(resolve, 350));
@@ -160,6 +188,7 @@
     const payload = new URLSearchParams({
       name,
       plusOnes: String(plusOnes),
+      plusOneName,
       website: ""
     });
 
@@ -178,10 +207,12 @@
 
     const name = cleanName(nameInput.value);
     const plusOnes = getPlusOnes();
+    if (!validatePlusOneName(plusOnes)) return;
+    const plusOneName = plusOnes === 1 ? cleanName(plusOneNameInput.value) : "";
     setSubmitting(true);
 
     try {
-      await saveRsvp(name, plusOnes);
+      await saveRsvp(name, plusOnes, plusOneName);
       guestName.textContent = name;
       if (mapUrl) {
         mapLink.href = mapUrl;
@@ -208,7 +239,16 @@
     if (nameError.textContent) validateName();
   });
 
+  form.querySelectorAll("input[name=plusOnes]").forEach((input) => {
+    input.addEventListener("change", updatePlusOneField);
+  });
+
+  plusOneNameInput.addEventListener("input", () => {
+    if (plusOneNameError.textContent) validatePlusOneName(getPlusOnes());
+  });
+
   addGrainTexture();
   setUpArtworkReveal();
   setUpCalendarActions();
+  updatePlusOneField();
 })();
