@@ -389,7 +389,37 @@ input[type="text"]:focus { border-bottom-color: var(--terracotta); }
   outline-offset: 4px;
 }
 
-.button-arrow { font-size: 18px; line-height: 1; }
+.button-arrow {
+  position: relative;
+  width: 15px;
+  height: 15px;
+  display: inline-block;
+  flex: 0 0 15px;
+  font-size: 0;
+}
+
+.button-arrow::before {
+  content: "";
+  position: absolute;
+  top: 7px;
+  left: 0;
+  width: 15px;
+  height: 1.5px;
+  background: currentColor;
+  transform: rotate(-45deg);
+  transform-origin: center;
+}
+
+.button-arrow::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 7px;
+  height: 7px;
+  border-top: 1.5px solid currentColor;
+  border-right: 1.5px solid currentColor;
+}
 
 .form-status {
   min-height: 18px;
@@ -401,6 +431,26 @@ input[type="text"]:focus { border-bottom-color: var(--terracotta); }
 .rsvp-form.is-submitting .primary-button {
   pointer-events: none;
   opacity: 0.58;
+}
+
+.invitation.is-confirmed .opening,
+.invitation.is-confirmed .rsvp-introduction {
+  display: none;
+}
+
+.invitation.is-confirmed .rsvp-section {
+  display: flex;
+  align-items: center;
+  min-height: calc(100svh - 112px);
+  padding-top: clamp(56px, 10svh, 132px);
+  padding-bottom: clamp(56px, 10svh, 132px);
+  border-top: 0;
+}
+
+.invitation.is-confirmed .response-area {
+  width: 100%;
+  max-width: 570px;
+  margin: 0 auto;
 }
 
 .success-view {
@@ -650,6 +700,12 @@ input[type="text"]:focus { border-bottom-color: var(--terracotta); }
     padding: 29px 0 38px;
   }
 
+  .invitation.is-confirmed .rsvp-section {
+    min-height: calc(100svh - 78px);
+    padding-top: 56px;
+    padding-bottom: 56px;
+  }
+
   .rsvp-introduction { display: grid; grid-template-columns: 46px 1fr; column-gap: 12px; }
   .section-number { grid-column: 1; margin: 3px 0 0; }
   .rsvp-introduction h2 { grid-column: 2; max-width: 320px; font-size: 31px; }
@@ -670,6 +726,12 @@ input[type="text"]:focus { border-bottom-color: var(--terracotta); }
   h1 { font-size: 44px; }
   .choice-list { gap: 9px 13px; }
   .choice { font-size: 18px; }
+  .masthead { gap: 7px; }
+  .masthead .wordmark { font-size: 15px; }
+  .masthead .wordmark-divider,
+  .masthead .guest-list-title { display: none; }
+  .masthead p:first-child { white-space: nowrap; }
+  .masthead p:last-child { max-width: 132px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
