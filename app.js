@@ -12,7 +12,6 @@
   const mapLink = document.querySelector("#map-link");
   const calendarActions = document.querySelector("#calendar-actions");
   const googleCalendarLink = document.querySelector("#google-calendar-link");
-  const icsDownloadLink = document.querySelector("#ics-download-link");
   const submitButton = form.querySelector("button[type=submit]");
 
   const endpoint = String(config.SHEET_ENDPOINT || "").trim();
@@ -106,77 +105,6 @@
     }, reducedMotionQuery.matches ? 0 : 1440);
   }
 
-  function escapeIcsText(value) {
-    return String(value)
-      .replace(/\\/g, "\\\\")
-      .replace(/\r?\n/g, "\\n")
-      .replace(/;/g, "\\;")
-      .replace(/,/g, "\\,");
-  }
-
-  function getIcsTimestamp() {
-    return new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
-  }
-
-  function foldIcsLine(line) {
-    const encoder = new TextEncoder();
-    const parts = [];
-    let current = "";
-    let currentLength = 0;
-
-    for (const character of line) {
-      const characterLength = encoder.encode(character).length;
-      if (current && currentLength + characterLength > 73) {
-        parts.push(current);
-        current = ` ${character}`;
-        currentLength = 1 + characterLength;
-      } else {
-        current += character;
-        currentLength += characterLength;
-      }
-    }
-
-    parts.push(current);
-    return parts.join("\r\n");
-  }
-
-  function buildCalendarFile() {
-    const lines = [
-      "BEGIN:VCALENDAR",
-      "VERSION:2.0",
-      "PRODID:-//Corner Pit//Fir Se Sundowner//EN",
-      "CALSCALE:GREGORIAN",
-      "METHOD:PUBLISH",
-      "BEGIN:VTIMEZONE",
-      "TZID:Asia/Kolkata",
-      "X-LIC-LOCATION:Asia/Kolkata",
-      "BEGIN:STANDARD",
-      "TZOFFSETFROM:+0530",
-      "TZOFFSETTO:+0530",
-      "TZNAME:IST",
-      "DTSTART:19700101T000000",
-      "END:STANDARD",
-      "END:VTIMEZONE",
-      "BEGIN:VEVENT",
-      "UID:fir-se-20260718T173000@cornerpit.com",
-      `DTSTAMP:${getIcsTimestamp()}`,
-      `DTSTART;TZID=${eventDetails.timezone}:${eventDetails.start}`,
-      `DTEND;TZID=${eventDetails.timezone}:${eventDetails.end}`,
-      `SUMMARY:${escapeIcsText(eventDetails.title)}`,
-      `LOCATION:${escapeIcsText(eventDetails.location)}`,
-      `DESCRIPTION:${escapeIcsText(eventDetails.description)}`,
-      "BEGIN:VALARM",
-      "TRIGGER:-PT3H",
-      "ACTION:DISPLAY",
-      "DESCRIPTION:Fir Se starts in three hours.",
-      "END:VALARM",
-      "END:VEVENT",
-      "END:VCALENDAR"
-    ];
-
-    return `${lines.map(foldIcsLine).join("\r\n")}\r\n`;
-  }
-
   function setUpCalendarActions() {
     const googleCalendarUrl = new URL("https://calendar.google.com/calendar/render");
     googleCalendarUrl.search = new URLSearchParams({
@@ -188,30 +116,6 @@
       details: eventDetails.description
     }).toString();
     googleCalendarLink.href = googleCalendarUrl.href;
-
-    const calendarContents = buildCalendarFile();
-    const calendarFile = new Blob([calendarContents], { type: "text/calendar;charset=utf-8" });
-    icsDownloadLink.href = URL.createObjectURL(calendarFile);
-    icsDownloadLink.download = "fir-se-sundowner.ics";
-
-    const isAppleMobile = /iPad|iPhone|iPod/.test(navigator.userAgent)
-      || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
-    if (!isAppleMobile || typeof File !== "function" || !navigator.share || !navigator.canShare) return;
-
-    const shareFile = new File([calendarContents], "fir-se-sundowner.ics", { type: "text/calendar;charset=utf-8" });
-    if (!navigator.canShare({ files: [shareFile] })) return;
-
-    icsDownloadLink.addEventListener("click", async (event) => {
-      event.preventDefault();
-      try {
-        await navigator.share({
-          title: eventDetails.title,
-          files: [shareFile]
-        });
-      } catch (error) {
-        if (error.name !== "AbortError") window.location.assign(icsDownloadLink.href);
-      }
-    });
   }
 
   function cleanName(value) {
