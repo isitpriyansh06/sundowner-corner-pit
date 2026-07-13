@@ -189,9 +189,29 @@
     }).toString();
     googleCalendarLink.href = googleCalendarUrl.href;
 
-    const calendarFile = new Blob([buildCalendarFile()], { type: "text/calendar;charset=utf-8" });
+    const calendarContents = buildCalendarFile();
+    const calendarFile = new Blob([calendarContents], { type: "text/calendar;charset=utf-8" });
     icsDownloadLink.href = URL.createObjectURL(calendarFile);
     icsDownloadLink.download = "fir-se-sundowner.ics";
+
+    const isAppleMobile = /iPad|iPhone|iPod/.test(navigator.userAgent)
+      || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+    if (!isAppleMobile || typeof File !== "function" || !navigator.share || !navigator.canShare) return;
+
+    const shareFile = new File([calendarContents], "fir-se-sundowner.ics", { type: "text/calendar;charset=utf-8" });
+    if (!navigator.canShare({ files: [shareFile] })) return;
+
+    icsDownloadLink.addEventListener("click", async (event) => {
+      event.preventDefault();
+      try {
+        await navigator.share({
+          title: eventDetails.title,
+          files: [shareFile]
+        });
+      } catch (error) {
+        if (error.name !== "AbortError") window.location.assign(icsDownloadLink.href);
+      }
+    });
   }
 
   function cleanName(value) {
