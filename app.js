@@ -189,18 +189,9 @@
     }).toString();
     googleCalendarLink.href = googleCalendarUrl.href;
 
-    icsDownloadLink.addEventListener("click", (event) => {
-      event.preventDefault();
-      const calendarFile = new Blob([buildCalendarFile()], { type: "text/calendar;charset=utf-8" });
-      const downloadUrl = URL.createObjectURL(calendarFile);
-      const downloadLink = document.createElement("a");
-      downloadLink.href = downloadUrl;
-      downloadLink.download = "fir-se-sundowner.ics";
-      document.body.append(downloadLink);
-      downloadLink.click();
-      downloadLink.remove();
-      window.setTimeout(() => URL.revokeObjectURL(downloadUrl), 0);
-    });
+    const calendarFile = new Blob([buildCalendarFile()], { type: "text/calendar;charset=utf-8" });
+    icsDownloadLink.href = URL.createObjectURL(calendarFile);
+    icsDownloadLink.download = "fir-se-sundowner.ics";
   }
 
   function cleanName(value) {
