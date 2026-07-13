@@ -99,11 +99,11 @@
 
     window.setTimeout(() => {
       mapLink.hidden = false;
-    }, reducedMotionQuery.matches ? 0 : 2050);
+    }, reducedMotionQuery.matches ? 0 : 1220);
 
     window.setTimeout(() => {
       calendarActions.hidden = false;
-    }, reducedMotionQuery.matches ? 0 : 2420);
+    }, reducedMotionQuery.matches ? 0 : 1440);
   }
 
   function escapeIcsText(value) {
@@ -279,8 +279,10 @@
       form.hidden = true;
       successView.hidden = false;
       invitation.classList.add("is-confirmed");
-      startUnlockSequence();
-      successView.scrollIntoView({ behavior: "smooth", block: "center" });
+      window.requestAnimationFrame(() => {
+        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+        startUnlockSequence();
+      });
     } catch (error) {
       setStatus("That didn’t go through. Please try once more.");
       setSubmitting(false);
