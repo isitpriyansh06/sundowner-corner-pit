@@ -10,12 +10,24 @@
   const artFragment = document.querySelector(".art-fragment");
   const guestName = document.querySelector("#guest-name");
   const mapLink = document.querySelector("#map-link");
+  const calendarActions = document.querySelector("#calendar-actions");
+  const googleCalendarLink = document.querySelector("#google-calendar-link");
+  const icsDownloadLink = document.querySelector("#ics-download-link");
   const submitButton = form.querySelector("button[type=submit]");
 
   const endpoint = String(config.SHEET_ENDPOINT || "").trim();
   const mapUrl = String(config.MAP_LINK || "").trim();
+  const eventAddress = String(config.EVENT_ADDRESS || mapUrl).trim();
   const maxPlusOnes = Number.isInteger(config.MAX_PLUS_ONES) ? config.MAX_PLUS_ONES : 2;
   const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const eventDetails = Object.freeze({
+    title: "Fir Se — 18 July, 5:30 PM",
+    start: "20260718T173000",
+    end: "20260718T203000",
+    timezone: "Asia/Kolkata",
+    location: eventAddress,
+    description: "Fir Se sundowner at Corner Pit. Starts at 5:30 PM."
+  });
 
   function addGrainTexture() {
     const size = 96;
@@ -88,6 +100,107 @@
     window.setTimeout(() => {
       mapLink.hidden = false;
     }, reducedMotionQuery.matches ? 0 : 2050);
+
+    window.setTimeout(() => {
+      calendarActions.hidden = false;
+    }, reducedMotionQuery.matches ? 0 : 2420);
+  }
+
+  function escapeIcsText(value) {
+    return String(value)
+      .replace(/\\/g, "\\\\")
+      .replace(/\r?\n/g, "\\n")
+      .replace(/;/g, "\\;")
+      .replace(/,/g, "\\,");
+  }
+
+  function getIcsTimestamp() {
+    return new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
+  }
+
+  function foldIcsLine(line) {
+    const encoder = new TextEncoder();
+    const parts = [];
+    let current = "";
+    let currentLength = 0;
+
+    for (const character of line) {
+      const characterLength = encoder.encode(character).length;
+      if (current && currentLength + characterLength > 73) {
+        parts.push(current);
+        current = ` ${character}`;
+        currentLength = 1 + characterLength;
+      } else {
+        current += character;
+        currentLength += characterLength;
+      }
+    }
+
+    parts.push(current);
+    return parts.join("\r\n");
+  }
+
+  function buildCalendarFile() {
+    const lines = [
+      "BEGIN:VCALENDAR",
+      "VERSION:2.0",
+      "PRODID:-//Corner Pit//Fir Se Sundowner//EN",
+      "CALSCALE:GREGORIAN",
+      "METHOD:PUBLISH",
+      "BEGIN:VTIMEZONE",
+      "TZID:Asia/Kolkata",
+      "X-LIC-LOCATION:Asia/Kolkata",
+      "BEGIN:STANDARD",
+      "TZOFFSETFROM:+0530",
+      "TZOFFSETTO:+0530",
+      "TZNAME:IST",
+      "DTSTART:19700101T000000",
+      "END:STANDARD",
+      "END:VTIMEZONE",
+      "BEGIN:VEVENT",
+      "UID:fir-se-20260718T173000@cornerpit.com",
+      `DTSTAMP:${getIcsTimestamp()}`,
+      `DTSTART;TZID=${eventDetails.timezone}:${eventDetails.start}`,
+      `DTEND;TZID=${eventDetails.timezone}:${eventDetails.end}`,
+      `SUMMARY:${escapeIcsText(eventDetails.title)}`,
+      `LOCATION:${escapeIcsText(eventDetails.location)}`,
+      `DESCRIPTION:${escapeIcsText(eventDetails.description)}`,
+      "BEGIN:VALARM",
+      "TRIGGER:-PT3H",
+      "ACTION:DISPLAY",
+      "DESCRIPTION:Fir Se starts in three hours.",
+      "END:VALARM",
+      "END:VEVENT",
+      "END:VCALENDAR"
+    ];
+
+    return `${lines.map(foldIcsLine).join("\r\n")}\r\n`;
+  }
+
+  function setUpCalendarActions() {
+    const googleCalendarUrl = new URL("https://calendar.google.com/calendar/render");
+    googleCalendarUrl.search = new URLSearchParams({
+      action: "TEMPLATE",
+      text: eventDetails.title,
+      dates: `${eventDetails.start}/${eventDetails.end}`,
+      ctz: eventDetails.timezone,
+      location: eventDetails.location,
+      details: eventDetails.description
+    }).toString();
+    googleCalendarLink.href = googleCalendarUrl.href;
+
+    icsDownloadLink.addEventListener("click", (event) => {
+      event.preventDefault();
+      const calendarFile = new Blob([buildCalendarFile()], { type: "text/calendar;charset=utf-8" });
+      const downloadUrl = URL.createObjectURL(calendarFile);
+      const downloadLink = document.createElement("a");
+      downloadLink.href = downloadUrl;
+      downloadLink.download = "fir-se-sundowner.ics";
+      document.body.append(downloadLink);
+      downloadLink.click();
+      downloadLink.remove();
+      window.setTimeout(() => URL.revokeObjectURL(downloadUrl), 0);
+    });
   }
 
   function cleanName(value) {
@@ -158,8 +271,10 @@
       if (mapUrl) {
         mapLink.href = mapUrl;
         mapLink.hidden = true;
+        calendarActions.hidden = true;
       } else {
         mapLink.hidden = true;
+        calendarActions.hidden = true;
       }
       form.hidden = true;
       successView.hidden = false;
@@ -178,4 +293,5 @@
 
   addGrainTexture();
   setUpArtworkReveal();
+  setUpCalendarActions();
 })();

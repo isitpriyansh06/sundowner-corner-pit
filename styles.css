@@ -556,6 +556,40 @@ input[type="text"]:focus { border-bottom-color: var(--terracotta); }
   transform: translateY(10px);
 }
 
+.calendar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 10px;
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.calendar-action {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 8px 11px;
+  border: 1px solid rgba(18, 21, 20, 0.72);
+  color: var(--ink);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  line-height: 1.1;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.calendar-action:hover {
+  border-color: var(--terracotta);
+  color: var(--terracotta);
+}
+
+.calendar-action:focus-visible {
+  outline: 2px solid var(--terracotta);
+  outline-offset: 3px;
+}
+
 .success-view.is-unlocking .success-stamp {
   animation: stamp-arrive 390ms 90ms both cubic-bezier(.2, .75, .28, 1);
 }
@@ -582,6 +616,10 @@ input[type="text"]:focus { border-bottom-color: var(--terracotta); }
 
 .success-view.is-unlocking .map-button {
   animation: map-unlock 440ms both cubic-bezier(.2, .75, .28, 1);
+}
+
+.success-view.is-unlocking .calendar-actions {
+  animation: map-unlock 390ms both cubic-bezier(.2, .75, .28, 1);
 }
 
 .success-view.is-unlocking .success-footnote {
@@ -756,7 +794,8 @@ input[type="text"]:focus { border-bottom-color: var(--terracotta); }
   .success-view h2,
   .success-view .success-copy,
   .success-view .success-footnote,
-  .map-button {
+  .map-button,
+  .calendar-actions {
     opacity: 1;
     transform: none;
   }
