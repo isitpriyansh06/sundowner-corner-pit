@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f3e4c8" />
+    <meta name="description" content="A private RSVP for an evening in Indiranagar." />
+    <title>The Guest List | Fir Se</title>
+    <link rel="preload" as="image" href="invite-poster.png" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="config.js" defer></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <main class="invitation" aria-labelledby="page-title">
+      <header class="masthead" aria-label="Event details">
+        <p><span class="wordmark" lang="hi">फिर से.</span><span class="wordmark-divider" aria-hidden="true">/</span>THE GUEST LIST</p>
+        <p>INDIRANAGAR <span class="masthead-dot" aria-hidden="true">&#183;</span> 18 JULY <span class="masthead-dot" aria-hidden="true">&#183;</span> 5:30 PM</p>
+      </header>
+
+      <section class="opening">
+        <figure class="art-fragment" aria-label="A fragment of the Fir Se sundowner artwork">
+          <img src="invite-poster.png" alt="" />
+        </figure>
+
+        <div class="opening-copy">
+          <p class="kicker">A small thing before Saturday</p>
+          <h1 id="page-title">The guest list has been waiting for one name.</h1>
+          <p class="opening-note">Add yours and we&rsquo;ll keep a place ready.</p>
+        </div>
+      </section>
+
+      <section class="rsvp-section" aria-label="RSVP">
+        <div class="rsvp-introduction">
+          <p class="section-number" aria-hidden="true">01</p>
+          <h2>Tell us who to hold a place for.</h2>
+          <p>Starts at 5:30 PM. Come in time for the good bit.</p>
+        </div>
+
+        <div class="response-area">
+          <form id="rsvp-form" class="rsvp-form" novalidate>
+            <div class="name-field">
+              <label for="name">Your name</label>
+              <input id="name" name="name" type="text" autocomplete="name" maxlength="80" placeholder="Write it here" required />
+              <p class="field-error" id="name-error" role="alert"></p>
+            </div>
+
+            <fieldset class="guest-count">
+              <legend>Who are you bringing along?</legend>
+              <p class="field-hint">One good plus-one is the sweet spot. It keeps the room feeling like us &mdash; and there&rsquo;s a good chance we&rsquo;ve already invited them ;)</p>
+              <div class="choice-list">
+                <label class="choice">
+                  <input type="radio" name="plusOnes" value="0" checked />
+                  <span class="choice-mark" aria-hidden="true"></span>
+                  <span>Just me</span>
+                </label>
+                <label class="choice">
+                  <input type="radio" name="plusOnes" value="1" />
+                  <span class="choice-mark" aria-hidden="true"></span>
+                  <span>Me + 1</span>
+                </label>
+                <label class="choice">
+                  <input type="radio" name="plusOnes" value="2" />
+                  <span class="choice-mark" aria-hidden="true"></span>
+                  <span>Me + 2</span>
+                </label>
+              </div>
+            </fieldset>
+
+            <aside class="host-note">
+              <p>House note</p>
+              <span>Drinks are covered. BYOB is welcome if you have a favourite to bring.</span>
+            </aside>
+
+            <div class="form-footer">
+              <button class="primary-button" type="submit">
+                <span class="button-label">Put me on the list</span>
+                <span class="button-arrow" aria-hidden="true">&#8599;</span>
+              </button>
+              <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+            </div>
+          </form>
+
+          <section id="success-view" class="success-view" hidden aria-live="polite">
+            <div class="success-stamp" aria-hidden="true">
+              <span class="seal-wax"></span>
+              <span>ON THE<br />LIST</span>
+            </div>
+            <p class="kicker">That&rsquo;s sorted</p>
+            <h2>
+              <span class="guest-name-wrap"><span id="guest-name">You</span><svg class="name-flourish" viewBox="0 0 210 34" aria-hidden="true" focusable="false"><path d="M4 24c25-18 43-20 61-8 20 14 43 13 61-2 18-15 37-17 58-7 10 5 16 4 22-1" /></svg></span>,
+              you&rsquo;re on the list.
+            </h2>
+            <p class="success-copy">The address is yours now.</p>
+            <a id="map-link" class="primary-button map-button" href="#" target="_blank" rel="noreferrer">
+              Open the map <span class="button-arrow" aria-hidden="true">&#8599;</span>
+            </a>
+            <p class="success-footnote">Starts at 5:30 PM. Keep this one close.</p>
+          </section>
+        </div>
+      </section>
+
+      <footer class="invitation-footer">
+        <span>NO TICKETS <i aria-hidden="true"></i> JUST LOVE</span>
+        <span><b class="footer-wordmark" lang="hi">फिर से.</b><i aria-hidden="true"></i> 18 JULY</span>
+      </footer>
+    </main>
+  </body>
+</html>

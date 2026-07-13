@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1080" height="1350" viewBox="0 0 1055 1491" role="img" aria-label="Fir Se private sundowner invite poster">
+  <defs>
+    <style>
+      .ink { fill: #121514; }
+      .terracotta { fill: #c94f25; }
+      .label { font-family: Avenir, "Helvetica Neue", Arial, sans-serif; font-weight: 800; letter-spacing: 11px; }
+      .copy { font-family: Baskerville, Georgia, serif; font-style: italic; }
+      .mono { font-family: Avenir, "Helvetica Neue", Arial, sans-serif; font-weight: 800; letter-spacing: 6px; }
+    </style>
+  </defs>
+
+  <!-- The original artwork stays untouched, including the hand-lettered title. -->
+  <image x="0" y="0" width="1055" height="1491" preserveAspectRatio="none" xlink:href="/Users/priyanshchoudhary/Downloads/WhatsApp Image 2026-07-06 at 9.34.27 PM.jpeg"/>
+
+  <!-- A simple paper box keeps the invitation copy together. -->
+  <path d="M118 738c191-8 417-7 687 0 13 139 12 370-1 594-226 11-454 10-685-1-14-179-14-389-1-593z" fill="#f3e4c8"/>
+  <path d="M119 739c201-7 454-7 686 0" stroke="#e8d4ae" stroke-width="5" fill="none"/>
+
+  <g transform="translate(178 825)">
+    <text x="0" y="0" class="label ink" font-size="38">YOU'RE INVITED</text>
+    <text x="0" y="58" class="copy ink" font-size="32">a sundowner for friends, by friends</text>
+    <path d="M0 96h275" stroke="#121514" stroke-width="2"/>
+    <text x="0" y="151" class="mono ink" font-size="28">INDIRANAGAR</text>
+    <text x="0" y="211" class="mono ink" font-size="27">18 JULY · SATURDAY</text>
+    <text x="0" y="262" class="mono ink" font-size="24">STARTS 5:30 PM</text>
+    <text x="0" y="325" class="copy ink" font-size="34">Location on RSVP.</text>
+    <text x="0" y="415" class="mono ink" font-size="17">NO TICKETS · JUST LOVE</text>
+  </g>
+
+  <g transform="translate(690 806) rotate(-7)">
+    <rect x="0" y="0" width="188" height="75" fill="none" stroke="#c94f25" stroke-width="4"/>
+    <text x="20" y="32" class="label terracotta" font-size="17" letter-spacing="5">INVITE</text>
+    <text x="20" y="58" class="label terracotta" font-size="17" letter-spacing="5">ONLY</text>
+  </g>
+
+</svg>
